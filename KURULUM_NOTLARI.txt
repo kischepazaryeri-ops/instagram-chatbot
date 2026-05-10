@@ -1,0 +1,122 @@
+=========================================================
+  INSTAGRAM CHATBOT — KEY KURULUM NOTLARI
+=========================================================
+
+.env dosyasını aç (yoksa .env.example'ı kopyala, adını .env yap)
+Her satırdaki = işaretinden sonraki boşluğa değeri yapıştır.
+
+---------------------------------------------------------
+1. PORT
+---------------------------------------------------------
+Değer: 3000
+Değiştirmene gerek yok. Railway/Render otomatik atar.
+
+---------------------------------------------------------
+2. OPENAI_API_KEY
+---------------------------------------------------------
+Nereden alınır:
+  → https://platform.openai.com/api-keys
+  → "Create new secret key" butonuna tıkla
+  → Kopyala, bir daha gösterilmez!
+
+Örnek: OPENAI_API_KEY=sk-proj-abc123...
+
+NOT: GPT-4o kullanmak için hesabında ücretli plan olmalı.
+
+---------------------------------------------------------
+3. PAGE_ACCESS_TOKEN
+---------------------------------------------------------
+Nereden alınır:
+  1. https://developers.facebook.com adresine git
+  2. "My Apps" > uygulamanı seç (yoksa "Create App")
+  3. Sol menü: Instagram > API Setup with Instagram Login
+     VEYA: Instagram > Basic Display
+  4. "Generate Token" butonuna tıkla
+  5. Instagram hesabınla giriş yap ve izin ver
+  6. Çıkan uzun token'ı kopyala
+
+Örnek: PAGE_ACCESS_TOKEN=EAABsbCS...
+
+NOT: Token 60 günde bir sona erer. Uzun ömürlü token için
+     Graph API Explorer'da "Extend Access Token" kullan.
+
+---------------------------------------------------------
+4. WEBHOOK_VERIFY_TOKEN
+---------------------------------------------------------
+Nereden alınır:
+  → Sen kendin belirlersin! İstediğin bir şifre/kelime yaz.
+  → Aynı değeri hem .env'e hem Meta dashboard'a gireceksin.
+
+Örnek: WEBHOOK_VERIFY_TOKEN=benim_gizli_kodum_2024
+
+Meta Dashboard'a nereye girilir:
+  Developers > Uygulaman > Webhooks > "Edit Subscription"
+  "Verify Token" alanına aynı değeri yaz.
+
+---------------------------------------------------------
+5. INSTAGRAM_ACCOUNT_ID
+---------------------------------------------------------
+Nereden alınır (Yol 1 — Kolay):
+  1. Instagram'da profiline git
+  2. Herhangi bir gönderin URL'sine bak:
+     instagram.com/p/ABC123/ → Bu gönderi ID'si, hesap ID değil
+  3. Graph API Explorer'ı kullan:
+     https://developers.facebook.com/tools/explorer/
+     → "me?fields=id,name" sorgusunu çalıştır
+     → Dönen "id" değeri senin hesap ID'n
+
+Nereden alınır (Yol 2):
+  Developers > Uygulaman > Instagram > Temel Ekran
+  "Instagram App ID" veya "User ID" alanı
+
+Örnek: INSTAGRAM_ACCOUNT_ID=17841234567890
+
+---------------------------------------------------------
+6. SLACK_WEBHOOK_URL
+---------------------------------------------------------
+Nereden alınır:
+  1. https://api.slack.com/apps adresine git
+  2. "Create New App" > "From Scratch"
+  3. Sol menü: "Incoming Webhooks" > Aktif Et
+  4. "Add New Webhook to Workspace" butonuna tıkla
+  5. Hangi kanala (#müşteri-hizmetleri gibi) bildirim
+     gelmesini istiyorsan onu seç
+  6. Webhook URL'ini kopyala
+
+Örnek: SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00/B00/xxxx
+
+NOT: Bu URL'yi kimseyle paylaşma, mesaj gönderme yetkisi verir.
+
+---------------------------------------------------------
+7. BRAND_NAME
+---------------------------------------------------------
+Nereden alınır:
+  → Sen belirlersin. Instagram hesabının adını yaz.
+
+Örnek: BRAND_NAME=Marka Adım
+
+=========================================================
+  DOLU ÖRNEK .env (gerçek değil, format için)
+=========================================================
+
+PORT=3000
+OPENAI_API_KEY=sk-proj-aBcDeFgHiJkLmNoPqRsTuV
+PAGE_ACCESS_TOKEN=EAABsbCS1234abcdEFGH
+WEBHOOK_VERIFY_TOKEN=chatbot_gizli_2024
+INSTAGRAM_ACCOUNT_ID=17841409123456789
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/ABC/DEF/xyz123
+BRAND_NAME=Benim Dükkanım
+
+=========================================================
+  KURULUM SIRASI
+=========================================================
+
+Adım 1: npm install          (paketleri indir)
+Adım 2: .env dosyasını doldur
+Adım 3: npm run dev          (test için çalıştır)
+Adım 4: Deploy et (Railway/Render)
+Adım 5: Deploy URL'ini Meta Webhook alanına gir
+         Örnek: https://senin-app.railway.app/webhook
+Adım 6: Meta'dan "Verify and Save" butonuna bas
+
+=========================================================
