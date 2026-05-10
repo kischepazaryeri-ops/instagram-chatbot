@@ -3,13 +3,16 @@ const axios = require('axios');
 
 const BASE_URL = 'https://graph.facebook.com/v19.0';
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-const INSTAGRAM_ACCOUNT_ID = process.env.INSTAGRAM_ACCOUNT_ID;
+const FACEBOOK_PAGE_ID = process.env.FACEBOOK_PAGE_ID;
+
 
 // Kullanıcıya DM gönder
 async function sendDM(recipientId, message) {
   try {
     const response = await axios.post(
-      `${BASE_URL}/${INSTAGRAM_ACCOUNT_ID}/messages`,
+    `${BASE_URL}/${FACEBOOK_PAGE_ID}/messages`,
+
+
 
       {
         recipient: { id: recipientId },
