@@ -25,7 +25,7 @@ app.get('/auth', async (req, res) => {
   if (!code) return res.send('Code bulunamadı');
   try {
     const axios = require('axios');
-    const response = await axios.get('https://graph.facebook.com/oauth/access_token', {
+    const tokenRes = await axios.get('https://graph.facebook.com/oauth/access_token', {
       params: {
         client_id: process.env.APP_ID,
         client_secret: process.env.APP_SECRET,
@@ -33,8 +33,17 @@ app.get('/auth', async (req, res) => {
         code,
       },
     });
-    const token = response.data.access_token;
-    res.send(`<h2>Token alındı! Render'a kaydet:</h2><textarea rows="5" cols="80">${token}</textarea>`);
+    const userToken = tokenRes.data.access_token;
+    const pageRes = await axios.get(`https://graph.facebook.com/${process.env.FACEBOOK_PAGE_ID}`, {
+      params: { fields: 'access_token', access_token: userToken },
+    });
+    const pageToken = pageRes.data.access_token || userToken;
+    res.send(`
+      <h2>User Token:</h2>
+      <textarea rows="3" cols="80">${userToken}</textarea>
+      <h2>Page Token (bunu PAGE_ACCESS_TOKEN yap):</h2>
+      <textarea rows="3" cols="80">${pageToken}</textarea>
+    `);
   } catch (err) {
     res.send(`Token alınamadı: ${JSON.stringify(err.response?.data || err.message)}`);
   }
